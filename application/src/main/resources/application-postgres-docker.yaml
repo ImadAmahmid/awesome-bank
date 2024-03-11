@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgresqlbankdb/bankdb
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    encrypt:
+      silentDecryptionFailure: false
+      defaultKey: 0
+      keys:
+        - version: 0
+          key: DkccUmwnh4SZAQZFhpaZq9UntasU2Bvd+hMG7A8UzD8=

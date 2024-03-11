@@ -1,101 +1,58 @@
-# 💰 **Bank Account** 💰
+<div>
 
-# Sujet
+<h3 align="center">Awesome Banking App</h3>
 
-Ce kata est un challenge d'[architecture hexagonale](https://fr.wikipedia.org/wiki/Architecture_hexagonale) autour du domaine de la banque.
+</div>
 
-## ⚠️ Modalités de candidatures ⚠️
+A banking up built quickly yet with love to Exalt IT Dojo, using Java 17 and Spring Boot 3 (Spring 6) with multiple layers, each set in a separate module for decoupling’s of concerns and more flexibility of implementation sake.
+In this readme you will find how to navigate the project as well as how to run using either java or inside of a docker container as a microservice.
 
-> Ce kata a deux objectifs : d'une part, permettre votre évaluation technique en tant que candidat ; 
-> d'autres parts servir de base à votre montée en compétences si vous nous rejoignez :smile:.
-> 
-> Il a donc volontairement un scope très large.
-> 
-> Dans le premier cas (processus de recrutement), vous pouvez le réaliser de plusieurs façons 
-> selon le temps que vous voulez investir dans l'exercice :
->
-> - vous avez peu de temps (une soirée) : faites uniquement le code métier, testé et fonctionnel, avec des adapteurs de tests.
-> - vous avez plus de temps (plusieurs soirées) : le code métier, exposé derrière une api REST, et une persistance fonctionnelle ; le tout testé de bout en bout.
-> - vous avez beaucoup de temps, et envie d'aller plus loin : la même chose, avec la containerisation de l'application, et une pipeline de CI/CD ;p
-> 
-> Vous serez évalués notamment sur les points suivants :
-> 
-> - Tout code livré doit être testé de manière adéquate (cas passants et non passants)
-> - Nous serons très vigilants sur le design, la qualité, et la lisibilité du code (et des commits)
->
+# How to run:
+If you run using docker compose you can benefit from a microservice architecture instanciating two
+instances of the bank service with postgres database. The nginx server load balancer will split the traffic 
+to target the two instances behind. Please check out the readme within the docker 
+compose folder in order to find the step by step guide.
 
-## Modalités de réalisation
+You can also run using Intelliji! If you do not the swagger generator plugin install and configured 
+you can spin up a mvn install first to generate these resources for you.
 
-> Pour réaliser ce kata : 
-> - Tirez une branche depuis main
-> - Réalisez vos développements sur cette branche
-> - Quand vous êtes prêts à effectuer votre rendu, ouvrez une merge request vers main 
->
-> ⚠️ L'ouverture de votre merge request déclenchera la revue de votre code !
-> 
->⚠️ Cette merge request sert de support à la revue de code, **NE LA MERGEZ PAS !**
->
+Third way of running the project is using a plain old java after a :
 
+```
+mvn clean install
 
-### Feature 1 : le compte bancaire
+java -jar -Dspring.profiles.active=postgres ./application/target/bank-application.jar
+```
+Once that's done you can access the application swagger doc here and make some tests:
 
-On souhaite proposer une fonctionnalité de compte bancaire. 
+[Swagger definition localhost URL](http://localhost:8080/swagger-ui.html#)
 
-Ce dernier devra disposer : 
+# Acrhitecture details: 
 
-- D'un numéro de compte unique (format libre)
-- D'un solde
-- D'une fonctionnalité de dépôt d'argent
-- D'une fonctionnalité de retrait d'argent
+### Bank-domain:
+Contains the business logic of the banking app.  
 
-La règle métier suivante doit être implémentée : 
+### Bank-dal
+Contains an implementation of the persistence layer using JPA.
+The entities and repositories will be nested in this project 
+as well as the mappers to convert these entities to domain objects.
 
-- Un retrait ne peut pas être effectué s'il représente plus d'argent qu'il n'y en a sur le compte
+### Bank-api 
+Contract first driven module, that takes care of the generation of the API 
+resources from a swagger file. These resources will be implemented by the api-bank
+module and call the adapter layer, the adapter will then 
+reach to the services of the bank-domain and map the result back to the api.
 
-__          
+### Bank Application module
+A small module that will spin up the spring boot app, enables the swagger api
+and expose our API for everyone!
+The application can run either with a postgres database or for a quick spin up using h2 embedded db.
+You can use the spring profiles: h2 , postgres for this purpose
 
-### Feature 2 : le découvert
+### Nice to have later:
+Add tracing to logs via a filter 
+Add validation to operations
+Add security layer allowing Admins only to create accounts
 
-On souhaite proposer un système de découvert autorisé sur les comptes bancaires.
-
-La règle métier suivante doit être implémentée : 
-
-- Si un compte dispose d'une autorisation de découvert, alors un retrait qui serait supérieur au solde du compte est autorisé
-si le solde final ne dépasse pas le montant de l'autorisation de découvert
-
-__
-
-### Feature 3 : le livret
-
-On souhaite proposer un livret d'épargne.
-
-Un livret d'épargne est un compte bancaire qui : 
-
-- dispose d'un plafond de dêpot : on ne peut déposer d'argent sur ce compte que dans la limite de ce plafond
-- ne peut pas avoir d'autorisation de découvert
-
-__
-
-### Feature 4 : le relevé de compte
-
-On souhaite proposer une fonctionnalité de relevé mensuel (sur un mois glissant) des opérations sur le compte
-
-Ce relevé devra faire apparaître : 
-
-- Le type de compte (Livret ou Compte Courant)
-- Le solde du compte à la date d'émission
-- La liste des opérations ayant eu lieu sur le compte, triées par date, dans l'ordre antéchronologique
-
-## Bonne chance !
-
-
-![archi-hexa](./assets/hexa-schema.png)
-
-
- 
-
-
-
-
-
-
+### Enhancements
+Remove the newBalance from the AccountOperations response

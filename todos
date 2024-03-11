@@ -1,0 +1,11 @@
+# Technical req
+Add traceId to logs
+Add more tests (Units and integration)
+Add actuator to check the health of database connection
+Figure out better names for the package and align between modules
+Make a terraform module to spin up the banking service using ECS
+
+# Functional requirements
+Add a basic authentication using an in memory users
+Allow PATCH operations to update accounts
+Polish response/requests in Swagger and make use of swagger validation using Mustache

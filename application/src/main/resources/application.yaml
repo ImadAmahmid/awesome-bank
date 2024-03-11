@@ -1,0 +1,12 @@
+logging:
+  level:
+    com: INFO
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    version: "openapi_3_0"
+
+spring:
+  jackson:
+    default-property-inclusion: NON_NULL

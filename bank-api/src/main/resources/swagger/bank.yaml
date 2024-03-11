@@ -1,0 +1,278 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local server
+
+paths:
+  /api/v1/bank/accounts:
+    get:
+      summary: Returns the list of bank accounts.
+      operationId: getAllBankAccounts
+      tags:
+        - Account
+      description: Returns the list of bank accounts.
+      responses:
+        '200':
+          description: List of bank accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/account-dto'
+  /api/v1/bank/account/{accountId}:
+    get:
+      summary: Returns the bank account if exists
+      operationId: getAccountById
+      tags:
+        - Account
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+            example: 1234
+          description: Account Id
+          required: true
+      responses:
+        '200':
+          description: Account found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account-dto'
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-not-found"
+    #      patch:
+    delete:
+      summary: Delete the bank account if exists.
+      operationId: deleteAccount
+      tags:
+        - Account
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+            example: 1234
+          description: Account Id
+          required: true
+      responses:
+        '204':
+          description: Account deleted
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-not-found"
+  /api/v1/bank/account/:
+    post:
+      summary: Create new account (Please remove the ID from the request)
+      description: Create new account, if account with the same Id already exists throw exception. (to be implemented |
+        and behaviour of post/ put needs more refinement based on the business logic of the bank.)
+      operationId: createNewAccount
+      tags:
+        - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/account-dto"
+      responses:
+        "201":
+          description: Account successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-dto"
+  /api/v1/bank/account/{accountId}/withdraw:
+    post:
+      summary: Withdraw from account
+      description: Withdraw money from bank account)
+      operationId: withdraw
+      tags:
+        - Operation
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+            example: 1234
+          description: Account Id
+          required: true
+        - in: query
+          name: amount
+          schema:
+            type: double
+            example: 99999 # a rich guy
+      responses:
+        "201":
+          description: Operation successfully executed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operation-dto"
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-not-found"
+        '500':
+          description: Let's say we are sparing you boring details, be gentle with our API and try again though!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operation-failed"
+  /api/v1/bank/account/{accountId}/deposit:
+    post:
+      summary: Deposit from account
+      description: Deposit money from bank account
+      operationId: deposit
+      tags:
+        - Operation
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+            example: 1234
+          description: Account Id
+          required: true
+        - in: query
+          name: amount
+          schema:
+            type: double
+            example: 99999 # a rich guy
+      responses:
+        "201":
+          description: Operation successfully executed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operation-dto"
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-not-found"
+        '500':
+          description: Let's say we are sparing you boring details, be gentle with our API and try again though!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operation-failed"
+  /api/v1/bank/account/{accountId}/operations:
+    get:
+      summary: Get operations for account
+      description: Gets the operations for an account since a month to date
+      operationId: getAccountLatestOperations
+      tags:
+        - Operation
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+            example: 1234
+          description: Account Id
+          required: true
+      responses:
+        '200':
+          description: Operations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account-operations-dto'
+
+components:
+  schemas:
+    account-dto:
+      type: object
+      description: Data element for Account
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - NORMAL
+            - LIVRET_A
+        balance:
+          type: double
+        hasLimit:
+          type: boolean
+        limitAllowed:
+          type: double
+        overdraftAllowed:
+          type: double
+    operation-dto:
+      type: object
+      description: Data element for Operation
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - WITHDRAWAL
+            - DEPOSIT
+        amount:
+          type: double
+        newAccountBalance:
+          type: double
+        accountId:
+          type: integer
+        createdAt:
+          type: string
+          format: datetime
+    account-operations-dto:
+      type: object
+      description: Holds an account with its operations
+      properties:
+        account:
+          $ref: '#/components/schemas/account-dto'
+        operations:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/operation-dto'
+
+    #    Errors
+    account-not-found:
+      type: object
+      properties:
+        type:
+          type: string
+          format: account.not.found
+        title:
+          type: string
+          format: Account not found.
+        status:
+          type: integer
+          format: "404"
+      description: Account not found
+    operation-failed:
+      type: object
+      properties:
+        type:
+          type: string
+          format: operation.failed
+        title:
+          type: string
+          format: Operation has failed.
+        status:
+          type: integer
+          format: "500"
+      description: Operation has failed
