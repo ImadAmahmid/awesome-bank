@@ -28,7 +28,6 @@ public class DefaultOperationService implements OperationService {
 	private final List<AccountOperationHandler> operationHandlers;
 
 	@Override
-	@Transactional(isolation = SERIALIZABLE)
 	public Operation updateBalance(Long accountId, OperationType operationType, BigDecimal amount) {
 		Account account = accountService.findByAccountIdAndLock(accountId);
 		AccountOperationHandler handler = operationHandlers.stream().filter(accountOperationHandler -> accountOperationHandler.getOperationType().equals(operationType))
