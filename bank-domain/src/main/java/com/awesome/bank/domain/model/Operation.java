@@ -23,4 +23,6 @@ public class Operation {
     private Account account;
 
     private OffsetDateTime createdAt;
+
+    private String createdBy;
 }

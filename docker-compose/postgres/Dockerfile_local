@@ -8,4 +8,4 @@ COPY  ../application-0.0-SNAPSHOT.jar /bank-application.jar
 EXPOSE 8080
 
 # Entrypoint ignity
-ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=postgres-docker","/bank-application.jar"]
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=postgres-docker,dev","/bank-application.jar"]

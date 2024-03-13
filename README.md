@@ -43,10 +43,22 @@ resources from a swagger file. These resources will be implemented by the api-ba
 module and call the adapter layer, the adapter will then 
 reach to the services of the bank-domain and map the result back to the api.
 
+### Bank-security 
+A new module to ensure the communication with the server is secure. The security is
+done through a registering of user at the application load when dev profile is active.
+The users are stored in an in memory cache, but a user repository would be a nice thing 
+to have in the future.
+This module also exposes an end point to authenticate. The users are user, admin & manager and 
+they all have a very strong password (password) 
+It will be a nice thing to add also a new end point to register users dynamically and 
+persist the user in a database.
+
 ### Bank Application module
 A small module that will spin up the spring boot app, enables the swagger api
 and expose our API for everyone!
 The application can run either with a postgres database or for a quick spin up using h2 embedded db.
+The auditing is also enabled by default, this way we can track every operation back to its issuer!
+
 You can use the spring profiles: h2 , postgres for this purpose
 
 ### Nice to have later:

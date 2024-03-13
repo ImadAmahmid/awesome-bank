@@ -1,6 +1,6 @@
 # Technical req
 Add traceId to logs
-Add more tests (Units and integration)
+Add more tests (Units and integration especially for the new security module)
 Add actuator to check the health of database connection
 Figure out better names for the package and align between modules
 Make a terraform module to spin up the banking service using ECS
@@ -9,3 +9,10 @@ Make a terraform module to spin up the banking service using ECS
 Add a basic authentication using an in memory users
 Allow PATCH operations to update accounts
 Polish response/requests in Swagger and make use of swagger validation using Mustache
+
+
+Update the tests and fix component tests
+add 401 unauthorized exception and to tests as well
+Update the bank api to use the new token
+Add the roles to the api description as well
+Polish the configuration imports

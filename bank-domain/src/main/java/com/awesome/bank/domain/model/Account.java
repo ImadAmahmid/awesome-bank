@@ -38,6 +38,8 @@ public class Account {
 
     private Instant latestUpdateDate;
 
+    private String createdBy;
+
     private Long version;
 
     private List<Operation> operations;

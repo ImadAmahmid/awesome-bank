@@ -15,6 +15,8 @@ paths:
       operationId: getAllBankAccounts
       tags:
         - Account
+      security:
+        - bearer: [ ]
       description: Returns the list of bank accounts.
       responses:
         '200':
@@ -29,6 +31,8 @@ paths:
     get:
       summary: Returns the bank account if exists
       operationId: getAccountById
+      security:
+        - bearer: [ ]
       tags:
         - Account
       parameters:
@@ -56,6 +60,8 @@ paths:
     delete:
       summary: Delete the bank account if exists.
       operationId: deleteAccount
+      security:
+        - bearer: [ ]
       tags:
         - Account
       parameters:
@@ -81,6 +87,8 @@ paths:
       description: Create new account, if account with the same Id already exists throw exception. (to be implemented |
         and behaviour of post/ put needs more refinement based on the business logic of the bank.)
       operationId: createNewAccount
+      security:
+        - bearer: [ ]
       tags:
         - Account
       requestBody:
@@ -100,6 +108,8 @@ paths:
       summary: Withdraw from account
       description: Withdraw money from bank account)
       operationId: withdraw
+      security:
+        - bearer: [ ]
       tags:
         - Operation
       parameters:
@@ -115,6 +125,7 @@ paths:
           schema:
             type: double
             example: 99999 # a rich guy
+          required: true
       responses:
         "201":
           description: Operation successfully executed
@@ -139,6 +150,8 @@ paths:
       summary: Deposit from account
       description: Deposit money from bank account
       operationId: deposit
+      security:
+        - bearer: [ ]
       tags:
         - Operation
       parameters:
@@ -153,7 +166,8 @@ paths:
           name: amount
           schema:
             type: double
-            example: 99999 # a rich guy
+            example: 99999
+          required: true
       responses:
         "201":
           description: Operation successfully executed
@@ -178,6 +192,8 @@ paths:
       summary: Get operations for account
       description: Gets the operations for an account since a month to date
       operationId: getAccountLatestOperations
+      security:
+        - bearer: [ ]
       tags:
         - Operation
       parameters:
@@ -197,6 +213,12 @@ paths:
                 $ref: '#/components/schemas/account-operations-dto'
 
 components:
+  securitySchemes:
+    bearer: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+
   schemas:
     account-dto:
       type: object
@@ -204,6 +226,7 @@ components:
       properties:
         id:
           type: integer
+          default: null
         type:
           type: string
           enum:
@@ -211,6 +234,8 @@ components:
             - LIVRET_A
         balance:
           type: double
+        createdBy:
+          type: string
         hasLimit:
           type: boolean
         limitAllowed:

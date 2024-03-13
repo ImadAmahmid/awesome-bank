@@ -5,6 +5,7 @@ import com.awesome.bank.domain.model.AccountType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.auditing.config.AuditingConfiguration;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,6 +39,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "account")
+@EntityListeners(AuditingEntityListener.class)
 public class AccountEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,6 +69,9 @@ public class AccountEntity implements Serializable {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    @CreatedBy
+    private String createdBy;
 
     @UpdateTimestamp
     private Instant latestUpdateDate;

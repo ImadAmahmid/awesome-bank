@@ -31,6 +31,7 @@
         <module>bank-domain</module>
         <module>bank-dal</module>
         <module>bank-api</module>
+        <module>bank-security</module>
         <module>application</module>
     </modules>
 

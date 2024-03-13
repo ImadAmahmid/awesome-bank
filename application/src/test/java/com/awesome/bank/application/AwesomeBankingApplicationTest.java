@@ -1,12 +1,9 @@
 package com.awesome.bank.application;
 
-import com.awesome.bank.adapter.AccountServiceAdapter;
 import com.awesome.bank.dal.entity.AccountEntity;
 import com.awesome.bank.dal.entity.OperationEntity;
 import com.awesome.bank.dal.repository.AccountPagingAndSortingRepository;
-import com.awesome.bank.dal.repository.AccountRepository;
 import com.awesome.bank.dal.repository.OperationRepository;
-import com.awesome.bank.domain.model.Operation;
 import com.awesome.bank.domain.model.OperationType;
 import com.awesome.bank.dto.generated.AccountDto;
 import com.awesome.bank.dto.generated.AccountOperationsDto;
@@ -23,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -30,6 +29,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
@@ -42,7 +45,7 @@ import java.util.List;
 import static com.awesome.bank.dto.generated.AccountDto.TypeEnum.NORMAL;
 
 @Slf4j
-@Profile("h2")
+@ActiveProfiles({"h2","test"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AwesomeBankingApplicationTest {
 
@@ -59,8 +62,6 @@ public class AwesomeBankingApplicationTest {
 	private AccountPagingAndSortingRepository accountPagingAndSortingRepository;
 	@Autowired
 	private OperationRepository operationRepository;
-
-
 
 
 	@BeforeEach
