@@ -1,0 +1,30 @@
+#Kafka
+spring:
+  kafka:
+    bootstrap-servers: "broker:29092"
+    producer:
+      keySerializer: "org.apache.kafka.common.serialization.StringSerializer"
+      valueSerializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
+      properties:
+        schema:
+          registry:
+            url: "http://schema-registry:8081"
+    consumer:
+      group-id: "bank-consumer"
+      keyDeserializer: "org.apache.kafka.common.serialization.StringDeserializer"
+      valueDeserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
+      autoOffsetReset: "earliest"
+      properties:
+        schema:
+          registry:
+            url: "http://schema-registry:8081"
+        specific:
+          avro:
+            reader: "true"
+
+
+event-producer:
+  operation:
+    topic:
+#      This is the same topic as for the instances running locally, so be wary that these events might be consumed there!
+      name: operations.bank.topic.v1

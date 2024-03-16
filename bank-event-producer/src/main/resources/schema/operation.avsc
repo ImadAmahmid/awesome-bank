@@ -1,0 +1,28 @@
+{
+  "namespace": "com.awesome.bank.kafka.generated.dto",
+  "type": "record",
+  "name": "OperationV2",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "accountId",
+      "type": "long"
+    },
+    {
+      "name": "newBalance",
+      "type": "double",
+      "default": 5
+    },
+    {
+      "name": "type",
+      "type": "string"
+    },
+    {
+      "name": "amount",
+      "type": "double"
+    }
+  ]
+}

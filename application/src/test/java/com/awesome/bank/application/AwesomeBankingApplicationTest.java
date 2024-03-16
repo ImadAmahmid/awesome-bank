@@ -8,6 +8,8 @@ import com.awesome.bank.domain.model.OperationType;
 import com.awesome.bank.dto.generated.AccountDto;
 import com.awesome.bank.dto.generated.AccountOperationsDto;
 import com.awesome.bank.dto.generated.OperationDto;
+import com.awesome.bank.event.BiEventPublisher;
+import com.awesome.bank.event.impl.DefaultBiEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,20 +20,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -43,6 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.awesome.bank.dto.generated.AccountDto.TypeEnum.NORMAL;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @Slf4j
 @ActiveProfiles({"h2","test"})
@@ -62,12 +63,16 @@ public class AwesomeBankingApplicationTest {
 	private AccountPagingAndSortingRepository accountPagingAndSortingRepository;
 	@Autowired
 	private OperationRepository operationRepository;
+	@SpyBean
+	@Autowired
+	BiEventPublisher biEventPublisher;
 
 
 	@BeforeEach
 	public void cleanUp() {
 		accountPagingAndSortingRepository.deleteAll();
 		operationRepository.deleteAll();
+		clearInvocations(biEventPublisher);
 	}
 
 	@Nested
@@ -183,6 +188,8 @@ public class AwesomeBankingApplicationTest {
 			// Since the deposit operation happened last, it should be on the top of the list
 			Assertions.assertThat(accountOperations.getBody().getOperations().get(0).getId()).isEqualTo(depositOperation.getBody().getId());
 			Assertions.assertThat(accountOperations.getBody().getOperations().get(1).getId()).isEqualTo(withdrawOperation.getBody().getId());
+			// it will be called one time because we have a buffer in the event publisher.
+			verify(biEventPublisher, times(2)).publish(any());
 		}
 
 		// todo: Add test for failed operations with a parametrized test defining most scenarios with Normal And Livret Account

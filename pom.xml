@@ -17,10 +17,7 @@
     </parent>
 
     <properties>
-<!--        <maven.compiler.source>1.8</maven.compiler.source>-->
-<!--        <maven.compiler.target>1.8</maven.compiler.target>-->
         <java.version>17</java.version>
-
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <org.mapstruct.version>1.6.0.Beta1</org.mapstruct.version>
@@ -32,6 +29,8 @@
         <module>bank-dal</module>
         <module>bank-api</module>
         <module>bank-security</module>
+        <module>bank-bi</module>
+        <module>bank-event-producer</module>
         <module>application</module>
     </modules>
 

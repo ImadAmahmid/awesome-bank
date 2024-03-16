@@ -1,0 +1,4 @@
+event-producer:
+  operation:
+    topic:
+      name: operations.v1.topic

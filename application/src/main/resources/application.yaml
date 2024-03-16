@@ -1,6 +1,6 @@
 logging:
   level:
-    com: INFO
+    com.awesome.bank: TRACE
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -12,9 +12,16 @@ spring:
     default-property-inclusion: NON_NULL
 
 
-#      Generated from this url: format 256
+server:
+  port: 8383
+
+# Generated from this url: format 256
 application:
   security:
     jwt:
       secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       expiration: 86400000 # a day
+
+bi-events:
+  # By default, send events after accumulating 2 events received!
+  eventsSizeLimit: 1

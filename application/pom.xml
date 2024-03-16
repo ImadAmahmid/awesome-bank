@@ -58,6 +58,12 @@
 
 		<dependency>
 			<groupId>com.awesome.bank</groupId>
+			<artifactId>bank-event-producer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.awesome.bank</groupId>
 			<artifactId>bank-dal</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -79,6 +85,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 

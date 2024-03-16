@@ -22,7 +22,7 @@ public abstract class AccountOperationHandler {
 	@Autowired
 	OperationDao operationDao;
 	@Autowired
-	 AccountDao accountDao;
+	AccountDao accountDao;
 
 	/**
 	 * It literally does make a transaction within a transaction :)

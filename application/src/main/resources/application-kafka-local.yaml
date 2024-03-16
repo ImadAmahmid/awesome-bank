@@ -1,0 +1,32 @@
+#Kafka
+spring:
+  kafka:
+    bootstrap-servers: "127.0.0.1:9092"
+    producer:
+      keySerializer: "org.apache.kafka.common.serialization.StringSerializer"
+      valueSerializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
+      properties:
+        schema:
+          registry:
+            url: "http://localhost:8081"
+    consumer:
+#      When you run the multiple apps with the docker compose withing /docker-compose/postgres you
+#      will notice that the events are consumed by the current app running in IntelliJ and by the one instance of the apps
+#      of the docker compose because the consumer group is different! If you set the same consumer group the events will be read once!
+      group-id: "bank-consumer-local"
+      keyDeserializer: "org.apache.kafka.common.serialization.StringDeserializer"
+      valueDeserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
+      autoOffsetReset: "earliest"
+      properties:
+        schema:
+          registry:
+            url: "http://localhost:8081"
+        specific:
+          avro:
+            reader: "true"
+
+
+event-producer:
+  operation:
+    topic:
+      name: operations.bank.topic.v1

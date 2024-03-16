@@ -17,6 +17,8 @@ and link them up as necessary:
   temporarily deactivated.
 - Banks: 2 banks will be run using the same configuration to target the same database instance. 
 
+- Kafka schema registery and brokers along with zookeper!
+
 # How to run?
 
 #### spin up maven install

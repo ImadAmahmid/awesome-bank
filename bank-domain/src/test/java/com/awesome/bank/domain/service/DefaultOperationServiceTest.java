@@ -1,5 +1,6 @@
 package com.awesome.bank.domain.service;
 
+import com.awesome.bank.domain.event.OperationBiEvent;
 import com.awesome.bank.domain.handler.AccountOperationHandler;
 import com.awesome.bank.domain.model.Account;
 import com.awesome.bank.domain.model.Operation;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +20,8 @@ import static com.awesome.bank.domain.model.OperationType.WITHDRAWAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -35,6 +39,8 @@ class DefaultOperationServiceTest {
     List<AccountOperationHandler> operationHandlers;
     @Mock
     AccountService accountService;
+    @Mock
+    ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private DefaultOperationService operationService;
@@ -58,6 +64,7 @@ class DefaultOperationServiceTest {
         Operation result = operationService.updateBalance(ACCOUNT_ID, WITHDRAWAL, AMOUNT);
 
         assertThat(result).isEqualTo(operation);
+        verify(eventPublisher).publishEvent(any(OperationBiEvent.class));
     }
 
 }

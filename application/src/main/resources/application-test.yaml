@@ -1,3 +1,19 @@
 spring:
   security:
     enabled: false
+
+bi-events:
+  # By default, send events with no accumulation of events received!
+  eventsSizeLimit: 1
+
+---
+spring:
+  kafka:
+    bootstrap-servers: localhost:8092 # should match with embedded broker host port
+    consumer:
+      groupId: fooGroup
+
+event-producer:
+  operation:
+    topic:
+      name: operations.v1.topic
