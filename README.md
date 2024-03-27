@@ -4,7 +4,7 @@
 
 </div>
 
-A banking up built quickly yet with love to Exalt IT Dojo, using Java 17 and Spring Boot 3 (Spring 6) with multiple layers, each set in a separate module for decoupling’s of concerns and more flexibility of implementation sake.
+A banking up built quickly yet with love to XXXX Dojo , using Java 17 and Spring Boot 3 (Spring 6) with multiple layers, each set in a separate module for decoupling’s of concerns and more flexibility of implementation sake.
 In this readme you will find how to navigate the project as well as how to run using either java or inside of a docker container as a microservice.
 
 # How to run:
@@ -33,7 +33,7 @@ java -jar -Dspring.profiles.active=postgres,dev,kafka,kafka-local ./application/
 ```
 Once that's done you can access the application swagger doc here and make some tests:
 
-[Swagger definition localhost URL](http://localhost:8080/swagger-ui.html#)
+[Swagger definition localhost URL](http://localhost:8383/swagger-ui.html#)
 
 # Acrhitecture details: 
 
