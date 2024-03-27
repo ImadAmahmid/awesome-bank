@@ -58,7 +58,7 @@
 
 		<dependency>
 			<groupId>com.awesome.bank</groupId>
-			<artifactId>bank-event-producer</artifactId>
+			<artifactId>bank-kafka</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

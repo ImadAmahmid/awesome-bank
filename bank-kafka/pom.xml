@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.awesome.bank</groupId>
-    <artifactId>bank-event-producer</artifactId>
-    <name>producer</name>
-    <description>An implementation to the subscriber of BI event through kafka messaging</description>
+    <artifactId>bank-kafka</artifactId>
+    <name>kafka</name>
+    <description>An implementation to the subscriber of BI event with kafka messaging, using kafka producers and consumers</description>
 
     <parent>
         <groupId>com.awesome.bank</groupId>

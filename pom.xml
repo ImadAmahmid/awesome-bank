@@ -30,7 +30,7 @@
         <module>bank-api</module>
         <module>bank-security</module>
         <module>bank-bi</module>
-        <module>bank-event-producer</module>
+        <module>bank-kafka</module>
         <module>application</module>
     </modules>
 
